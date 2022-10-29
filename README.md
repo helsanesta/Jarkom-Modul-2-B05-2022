@@ -1,5 +1,11 @@
 # Jarkom-Modul-2-B05-2022
 
+## Anggota 
+Nama            | NRP
+-------------   | -------------
+Helsa Nesta Dhaifullah  | 5025201005
+Achmad Nashruddin Riskynanda    | 5025201021
+Haniif Ahmad Jauhari  | 5025201224
 
 ## Soal dan Pembahasan
 ### No 1
