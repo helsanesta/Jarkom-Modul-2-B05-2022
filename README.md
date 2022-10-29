@@ -115,3 +115,31 @@ file "/etc/bind/wise/wise.B05.com";
   ```
   * Enable situs eden.wise dengan mengaktifkan config pada apache2 dengan cara `a2ensite eden.wise.b05.com`
   * Restart or Reload the Apache2 with `service apache2 reload`
+* SSS & Garden
+  * lynx www.eden.wise.b05.com
+  * screenshot :: 
+### No 11
+* Pada folder /public, Loid ingin hanya dapat melakukan directory listing saja
+* Pada Eden
+  * Tambahkan aturan Directory pada `/etc/apache2/sites-available/eden.wise.B05.com.conf`
+  ```
+  <VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/eden.wise.B05.com
+    ServerName eden.wise.B05.com
+    ServerAlias www.eden.wise.B05.com
+    <Directory /var/www/eden.wise.B05.com/public>
+      Options +Indexes
+    </Directory>
+    <Directory /var/www/eden.wise.B05.com>
+    Options +FollowSymLinks -Multiviews
+      AllowOverride All
+    </Directory>
+    ErrorLog \${APACHE_LOG_DIR}/error.log
+    CustomLog \${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+  ```
+  * Tinggal merestart atau reload apache2 dengan `service apache2 restart`
+ * Pada SSS & Garden
+  * lynx www.eden.wise.b05.com
+  * screenshot :: 
