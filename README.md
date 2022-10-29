@@ -417,7 +417,8 @@ echo "
 nameserver 192.175.3.2 #IP WISE nameserver 
 192.175.2.2 # IP Berlint
 " > /etc/resolv.conf
-lynx strix.operation.wise.B05.com:15000 lynx strix.operation.wise.B05.com:15500
+lynx strix.operation.wise.B05.com:15000
+lynx strix.operation.wise.B05.com:15500
 ```
 
 ### No 16
