@@ -90,28 +90,28 @@ file "/etc/bind/wise/wise.B05.com";
 
 ### No 10
 * Pada subdomain www.eden.wise.yyy.com, Loid membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/eden.wise.yyy.com
-  *PADA EDEN
-* Copy file `/etc/apache2/sites-available/000-default.conf` menjadi `/etc/apache2/sites-available/eden.wise.B05.com.conf` untuk mengambil default confignya
-* Modifikasi config baru `eden.wise.b05.conf`dengan isian :
-```
-<VirtualHost *:80>
-  ServerAdmin webmaster@localhost
-  DocumentRoot /var/www/eden.wise.B05.com
-  ServerName eden.wise.B05.com
-  ServerAlias www.eden.wise.B05.com
-  ErrorLog ${APACHE_LOG_DIR}/error.log
-  CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
-```
-* Buat directory root dengan cara `mkdir /var/www/eden.wise.B05.com`
-* Download resource yang telah diberikan
-```
-wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1q9g6nM85bW5T9f5yoyXtDqonUKKCHOTV' -O /var/www/eden.wise.zip
-```
-* Extract file dengan `unzip /var/www/eden.wise.zip -d /var/www`
-* Pindahkan sesuai dengan directory yang diinginkan
-```
-cp /var/www/eden.wise/* /var/www/eden.wise.B05.com
-```
-* Enable situs eden.wise dengan mengaktifkan config pada apache2 dengan cara `a2ensite eden.wise.b05.com`
-* Restart or Reload the Apache2 with `service apache2 reload`
+* PADA EDEN
+  * Copy file `/etc/apache2/sites-available/000-default.conf` menjadi `/etc/apache2/sites-available/eden.wise.B05.com.conf` untuk mengambil default confignya
+  * Modifikasi config baru `eden.wise.b05.conf`dengan isian :
+  ```
+  <VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/eden.wise.B05.com
+    ServerName eden.wise.B05.com
+    ServerAlias www.eden.wise.B05.com
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+  </VirtualHost>
+  ```
+  * Buat directory root dengan cara `mkdir /var/www/eden.wise.B05.com`
+  * Download resource yang telah diberikan
+  ```
+  wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1q9g6nM85bW5T9f5yoyXtDqonUKKCHOTV' -O /var/www/eden.wise.zip
+  ```
+  * Extract file dengan `unzip /var/www/eden.wise.zip -d /var/www`
+  * Pindahkan sesuai dengan directory yang diinginkan
+  ```
+  cp /var/www/eden.wise/* /var/www/eden.wise.B05.com
+  ```
+  * Enable situs eden.wise dengan mengaktifkan config pada apache2 dengan cara `a2ensite eden.wise.b05.com`
+  * Restart or Reload the Apache2 with `service apache2 reload`
