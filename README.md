@@ -88,6 +88,124 @@ file "/etc/bind/wise/wise.B05.com";
 * Testing melakukan ping strix.operation.wise.B05.com dan www.strix.operation.wise.B05.com pada SSS / Garden. Dapat terlihat bahwa IP mengarah pada IP Eden. <br>
 ![image](https://user-images.githubusercontent.com/70515589/198567589-2f5084ce-7285-4d64-a4fe-1be2021531dc.png)
 
+### No 8
+* Pada WISE, kita buat konfigurasi PTR dari IP Eden yang mengarah ke `wise.B05.com` dengan melakukan copy `cp /etc/bind/wise/3.175.192.in-addr.arpa 
+/etc/bind/wise/2.175.192.in-addr.arpa`
+
+* Kemudian edit menggunakan `nano /etc/bind/wise/2.175.192.in-addr.arpa` agar menjadi seperti berikut.
+```
+;
+; BIND data file for local loopback interface
+;
+$TTL 604800
+@     IN     SOA    wise.B05.com.   root.wise.B05.com. (
+                        2           ; Serial
+                        604800      ; Refresh
+                        86400       ; Retry
+                        2419200     ; Expire
+                        604800 )    ; Negative Cache TTL
+;
+2.175.192.in-addr.arpa. IN    NS     wise.B05.com.
+3                       IN    PTR    wise.B05.com.
+```
+* Kemudian, tambahkan `zone "2.175.192.in-addr.arpa"` ke dalam `/etc/bind/named.conf.local` seperti berikut.
+```
+zone "2.175.192.in-addr.arpa" {
+ type master;
+ file "/etc/bind/wise/2.175.192.in-addr.arpa";
+};
+```
+
+* Ubah konfigurasi `wise.B05.com` agar mengarah ke IP Eden seperti berikut.
+```
+;
+; BIND data file for local loopback interface
+;
+$TTL 604800
+@   IN  SOA     wise.B05.com.   root.wise.B05.com. (
+                        2           ; Serial
+                        604800      ; Refresh
+                        86400       ; Retry
+                        2419200     ; Expire
+                        604800 )    ; Negative Cache TTL
+;
+@           IN      NS          wise.B05.com.
+@           IN      A           192.175.2.3
+www         IN      CNAME       wise.B05.com.
+eden        IN      A           192.175.2.3
+www.eden    IN      CNAME       eden.wise.B05.com.
+ns1         IN      A           192.175.2.3
+operation   IN      NS          ns1
+@           IN      AAAA        ::1
+```
+
+* Restart bind9 dengan `service bind9 restart`
+
+* Pada Eden, install semua package yang akan diperlukan.
+```
+apt-get update
+apt-get install apache2
+service apache2 start
+apt-get install php
+apt-get install libapache2-mod-php7.0
+apt-get install wget -y
+apt-get install unzip -y
+```
+
+* Lalu, buat konfigurasi site `wise.B05.com` pada apache2 dengan mengcopy `cp /etc/apache2/sites-available/000-default.conf 
+/etc/apache2/sites-available/wise.B05.com.conf`
+
+* Edit konfigurasi site `wise.B05.com` dengan `nano /etc/apache2/sites-available/wise.B05.com.conf` seperti berikut.
+```
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/wise.B05.com
+    ServerName wise.B05.com
+    ServerAlias www.wise.B05.com
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+
+* Buat direktori `/var/www/wise.B05.com` dan download resource serta unzip dan pindahkan isinya ke direktori tersebut.
+```
+mkdir /var/www/wise.B05.com
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1S0XhL9ViYN7TyCj2W66BNEXQD2AAAw2e' -O /var/www/wise.zip
+unzip /var/www/wise.zip -d /var/www
+cp /var/www/wise/* /var/www/wise.B05.com
+```
+
+* Aktifkan site dengan command a2ensite dan restart serta reload apache2.
+```
+a2ensite wise.B05.com
+service apache2 restart
+service apache2 reload
+```
+
+* Pada SSS dan Garden, ubah nameserver pada `/etc/resolv.conf` agar mengarah ke IP WISE dan buka site `www.wise.B05.com` menggunakan lynx.
+```
+echo “nameserver 192.175.3.2” > /etc/resolv.conf
+lynx www.wise.B05.com
+```
+
+### No 9
+* Aktifkan modul rewrite dengan command `a2enmod rewrite`
+* Buat konfigurasi file `.htaccess` dengan menggunakan `nano /var/www/wise.B05.com/.htaccess` seperti berikut.
+```
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule (.*) /index.php/\$1 [L]
+```
+* Tambahkan potongan kode berikut pada konfigurasi site `wise.B05.com` di `/etc/apache2/sites-available/wise.B05.com.conf`.
+```
+<Directory /var/www/wise.B05.com>
+    Options +FollowSymLinks -Multiviews
+    AllowOverride All
+</Directory>
+ ```
+* Restart apache2 dengan command `service apache2 restart`
+
 ### No 10
 * Pada subdomain www.eden.wise.yyy.com, Loid membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/eden.wise.yyy.com
 * PADA EDEN
@@ -212,3 +330,138 @@ www.eden.wise.yyy.com/public/js menjadi www.eden.wise.yyy.com/js.
  * Pada SSS & Garden
  * `lynx www.eden.wise.B05.com/js`
  * Screenshot : 
+
+### No 14
+* Pada Eden, buat konfigurasi site `strix.operation.wise.B05.com` pada dir `/etc/apache2/sites-available/strix.operation.wise.B05.com.conf` seperti berikut.
+```
+<VirtualHost *:15000 *:15500>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/strix.operation.wise.B05.com
+    ServerName strix.operation.wise.B05.com
+    ServerAlias www.strix.operation.wise.B05.com
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+```
+
+* Buat direktori `/var/www/strix.operation.wise.B05.com` dan download resource serta unzip dan pindahkan isinya ke direktori tersebut. Lalu aktifkan sitenya dengan command `a2ensite` seperti berikut.
+```
+mkdir /var/www/strix.operation.wise.B05.com
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1bgd3B6VtDtVv2ouqyM8wLyZGzK5C9maT’ -O /var/www/strix.operation.wise.zip
+unzip /var/www/strix.operation.wise.zip -d /var/www
+cp -r /var/www/strix.operation.wise/* /var/www/strix.operation.wise.B05.com
+rm -r /var/www/strix.operation.wise
+a2ensite strix.operation.wise.B05.com
+```
+
+* Tambahkan port 15000 dan 15500 pada konfigurasi port di `/etc/apache2/ports.conf` seperti berikut.
+```
+Listen 80
+Listen 15000
+Listen 15500
+
+<IfModule ssl_module>
+    Listen 443
+</IfModule>
+<IfModule gnutls.c>
+    Listen 443
+</IfModule>
+```
+* Restart apache2 dengan command `service apache2 restart`
+
+* Pada SSS dan Garden, ubah konfigurasi nameserver agar mengarah ke IP WISE dan Berlint. Kemudian gunakan lynx untuk mencoba membuka site nya seperti berikut.
+```
+echo "
+nameserver 192.175.3.2 #IP WISE nameserver 
+192.175.2.2 # IP Berlint
+" > /etc/resolv.conf
+lynx strix.operation.wise.B05.com:15000
+lynx strix.operation.wise.B05.com:15500
+```
+
+### No 15
+* Pada Eden, install package `apache2-utils` dengan command `apt-get install apache2-utils`.
+* Buat konfigurasi password pada file `.htpasswd` dengan command berikut.
+```
+htpasswd -c /etc/apache2/.htpasswd Twilight opStrix
+```
+* Tambahkan kode berikut pada konfigurasi site `strix.operation.wise.B05.com` pada dir `/etc/apache2/sites-available/strix.operation.wise.B05.com.conf`.
+```
+<Directory "/var/www/strix.operation.wise.B05.com">
+    AuthType Basic
+    AuthName "Restricted Content"
+    AuthUserFile /etc/apache2/.htpasswd
+    Require valid-user
+</Directory>
+```
+* Restart apache2 dengan command `service apache2 restart`
+
+* Pada SSS dan Garden, atur nameserver dan coba buka site menggunakan lynx sperti berikut.
+```
+echo "
+nameserver 192.175.3.2 #IP WISE nameserver 
+192.175.2.2 # IP Berlint
+" > /etc/resolv.conf
+lynx strix.operation.wise.B05.com:15000 lynx strix.operation.wise.B05.com:15500
+```
+
+### No 16
+* Pada Eden, ubah dan tambahkan kode berikut pada konfigurasi `000-default.conf` pad dir `/etc/apache2/sites-available/000-default.conf`.
+```
+RewriteEngine On
+RewriteCond %{HTTP_HOST} !^wise.B05.com$
+RewriteRule /.* http://wise.B05.com/ [R]
+```
+* Restart apache2 dengan command `service apache2 restart`
+
+* Pada SSS dan Garden, coba buka IP Eden dengan lynx seperti berikut `lynx 192.175.2.3`
+
+### No 17
+* Pada Eden, aktifkan modul rewrite dengan command `a2enmod rewrite`.
+* Buat file `.htaccess` dengan menggunakan `nano /var/www/eden.wise.B05.com/.htaccess` dan tambahkan kode berikut.
+```
+RewriteEngine On
+RewriteRule (.*)eden(.*)(\.jpg|\.png|\.gif)$ http://eden.wise.B05.com/public/images/eden.png [L,R=301]
+```
+* Ubah konfigurasi site `eden.wise.B05.com` pada dir `/etc/apache2/sites-available/eden.wise.B05.com.conf` seperti berikut.
+```
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/eden.wise.B05.com
+    ServerName eden.wise.B05.com
+    ServerAlias www.eden.wise.B05.com
+
+    ErrorDocument 404 /error/404.html
+    ErrorDocument 500 /error/404.html
+    ErrorDocument 502 /error/404.html
+    ErrorDocument 503 /error/404.html
+    ErrorDocument 504 /error/404.html
+
+    <Directory /var/www/eden.wise.B05.com/public>
+        Options +Indexes
+    </Directory>
+
+    Alias "/js" "/var/www/eden.wise.B05.com/public/js"
+
+    <Directory /var/www/eden.wise.B05.com>
+        Options +FollowSymLinks -Multiviews
+        AllowOverride All
+    </Directory>
+
+    ErrorLog \${APACHE_LOG_DIR}/error.log
+    CustomLog \${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+
+* Restart apache2 dengan command `service apache2 restart`
+
+* Pada SSS, gunakan lynx untuk mengakses url seperti berikt
+```
+lynx eden.wise.B05.com/public/images/not-eden.png
+```
+* Pada Garden, gunakan lynx untuk mengakses url seperti berikt
+```
+lynx eden.wise.B05.com/public/images/buddies.jpg
+```
+
