@@ -473,3 +473,6 @@ lynx eden.wise.B05.com/public/images/not-eden.png
 lynx eden.wise.B05.com/public/images/buddies.jpg
 ```
 
+## Kendala Pengerjaan Modul 2
+* Lupa install libapache, sehingga di no 10 tidak bisa jalan / unknown host saat melakukan ping di node client.
+* Peletakan nameserver yang terbalik, mempengaruhi saat melakukan ping (jika terbalik peletakannya, maka tidak akan bisa melakukan ping domain yg diminta).
