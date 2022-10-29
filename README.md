@@ -470,11 +470,11 @@ RewriteRule (.*)eden(.*)(\.jpg|\.png|\.gif)$ http://eden.wise.B05.com/public/ima
 
 * Restart apache2 dengan command `service apache2 restart`
 
-* Pada SSS, gunakan lynx untuk mengakses url seperti berikt
+* Pada SSS, gunakan lynx untuk mengakses url seperti berikut
 ```
 lynx eden.wise.B05.com/public/images/not-eden.png
 ```
-* Pada Garden, gunakan lynx untuk mengakses url seperti berikt
+* Pada Garden, gunakan lynx untuk mengakses url seperti berikut
 ```
 lynx eden.wise.B05.com/public/images/buddies.jpg
 ```
