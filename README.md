@@ -140,6 +140,6 @@ file "/etc/bind/wise/wise.B05.com";
 </VirtualHost>
   ```
   * Tinggal merestart atau reload apache2 dengan `service apache2 restart`
- * Pada SSS & Garden
+* Pada SSS & Garden
   * lynx www.eden.wise.b05.com
   * screenshot :: 
