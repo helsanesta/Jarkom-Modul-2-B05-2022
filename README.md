@@ -193,7 +193,7 @@ service apache2 reload
 echo “nameserver 192.175.3.2” > /etc/resolv.conf
 lynx www.wise.B05.com
 ```
-
+![image8](https://user-images.githubusercontent.com/100585249/198834821-0d7edfeb-c19c-4c4f-b5ff-8b2a65fe711a.PNG)
 ### No 9
 * Aktifkan modul rewrite dengan command `a2enmod rewrite`
 * Buat konfigurasi file `.htaccess` dengan menggunakan `nano /var/www/wise.B05.com/.htaccess` seperti berikut.
@@ -211,7 +211,7 @@ RewriteRule (.*) /index.php/\$1 [L]
 </Directory>
  ```
 * Restart apache2 dengan command `service apache2 restart`
-
+![image8](https://user-images.githubusercontent.com/100585249/198834838-d9263992-a57f-451f-a0ce-33dcabcbba6d.PNG)
 ### No 10
 * Pada subdomain www.eden.wise.yyy.com, Loid membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/eden.wise.yyy.com
 * PADA EDEN
@@ -393,7 +393,7 @@ nameserver 192.175.3.2 #IP WISE nameserver
 lynx strix.operation.wise.B05.com:15000
 lynx strix.operation.wise.B05.com:15500
 ```
-
+![image14](https://user-images.githubusercontent.com/100585249/198834865-e7c025f6-98b8-44a4-9c0d-e812f2a22857.PNG)
 ### No 15
 * Pada Eden, install package `apache2-utils` dengan command `apt-get install apache2-utils`.
 * Buat konfigurasi password pada file `.htpasswd` dengan command berikut.
@@ -420,7 +420,9 @@ nameserver 192.175.3.2 #IP WISE nameserver
 lynx strix.operation.wise.B05.com:15000
 lynx strix.operation.wise.B05.com:15500
 ```
-
+![image15_1](https://user-images.githubusercontent.com/100585249/198834877-dddda542-68b9-4556-94c5-187b2e603d95.PNG)
+![image15_2](https://user-images.githubusercontent.com/100585249/198834878-633acfbf-fcaa-4ea2-8ad1-2f7ac19d8853.PNG)
+![image15_3](https://user-images.githubusercontent.com/100585249/198834881-d7bf9dd0-c70f-4f93-acd7-460cfcef61a4.PNG)
 ### No 16
 * Pada Eden, ubah dan tambahkan kode berikut pada konfigurasi `000-default.conf` pad dir `/etc/apache2/sites-available/000-default.conf`.
 ```
@@ -431,7 +433,7 @@ RewriteRule /.* http://wise.B05.com/ [R]
 * Restart apache2 dengan command `service apache2 restart`
 
 * Pada SSS dan Garden, coba buka IP Eden dengan lynx seperti berikut `lynx 192.175.2.3`
-
+![image16](https://user-images.githubusercontent.com/100585249/198834896-ee46c7ba-a0b9-41bc-a3e3-ff24d43fd8b6.PNG)
 ### No 17
 * Pada Eden, aktifkan modul rewrite dengan command `a2enmod rewrite`.
 * Buat file `.htaccess` dengan menggunakan `nano /var/www/eden.wise.B05.com/.htaccess` dan tambahkan kode berikut.
@@ -479,6 +481,8 @@ lynx eden.wise.B05.com/public/images/not-eden.png
 ```
 lynx eden.wise.B05.com/public/images/buddies.jpg
 ```
+![image17_1](https://user-images.githubusercontent.com/100585249/198834912-90d8f92d-8ce9-45b8-88cb-4bb3525c5a30.PNG)
+![image17_2](https://user-images.githubusercontent.com/100585249/198834918-ede86887-ec15-43e1-ab1d-edc53eff8779.PNG)
 
 ## Kendala Pengerjaan Modul 2
 * Lupa install libapache, sehingga di no 10 tidak bisa jalan / unknown host saat melakukan ping di node client.
