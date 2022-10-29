@@ -114,7 +114,7 @@ file "/etc/bind/wise/wise.B05.com";
   cp /var/www/eden.wise/* /var/www/eden.wise.B05.com
   ```
   * Enable situs eden.wise dengan mengaktifkan config pada apache2 dengan cara `a2ensite eden.wise.b05.com`
-  * Restart or Reload the Apache2 with `service apache2 reload`
+  * Restart atau Reload Apache2 dengan `service apache2 reload`
 * SSS & Garden
   * lynx www.eden.wise.b05.com
   * screenshot :: 
@@ -137,9 +137,78 @@ file "/etc/bind/wise/wise.B05.com";
     </Directory>
     ErrorLog \${APACHE_LOG_DIR}/error.log
     CustomLog \${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
+  </VirtualHost>
   ```
+  
   * Tinggal merestart atau reload apache2 dengan `service apache2 restart`
 * Pada SSS & Garden
-  * lynx www.eden.wise.b05.com
-  * screenshot :: 
+  * lynx www.eden.wise.b05.com/public
+  * screenshot :
+### No 12
+* Loid juga ingin menyiapkan error file 404.html pada folder /error untuk
+mengganti error kode pada apache
+* Pada Eden
+  * Tambahkan opsi `ErrorDocument` pada konfigurasi situs apache2 `/etc/apache2/sites-available/eden.wise.B05.com.conf`
+  ```
+  <VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/eden.wise.B05.com
+    ServerName eden.wise.B05.com
+    ServerAlias www.eden.wise.B05.com
+    
+    ErrorDocument 404 /error/404.html
+    ErrorDocument 500 /error/404.html
+    ErrorDocument 502 /error/404.html
+    ErrorDocument 503 /error/404.html
+    ErrorDocument 504 /error/404.html
+    
+    <Directory /var/www/eden.wise.B05.com/public>
+      Options +Indexes
+    </Directory>
+    <Directory /var/www/eden.wise.B05.com>
+      Options +FollowSymLinks -Multiviews
+      AllowOverride All
+    </Directory>
+    
+    ErrorLog \${APACHE_LOG_DIR}/error.log
+    CustomLog \${APACHE_LOG_DIR}/access.log combined
+  </VirtualHost>
+  ```
+  * Restart atau Reload the Apache2 service dengan `service apache2 reload`
+
+### No 13
+* Loid juga meminta Franky untuk dibuatkan
+konfigurasi virtual host. Virtual host ini bertujuan untuk dapat mengakses file asset
+www.eden.wise.yyy.com/public/js menjadi www.eden.wise.yyy.com/js.
+* Pada Eden
+  * Tambahkan opsi Alias pada konfigurasi `/etc/apache2/sites-available/eden.wise.B05.com.conf`
+  ```
+  <VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/eden.wise.B05.com
+    ServerName eden.wise.B05.com
+    ServerAlias www.eden.wise.B05.com
+ 
+    <Directory /var/www/eden.wise.B05.com/public>
+      Options +Indexes
+    </Directory>
+    Alias "/js" "/var/www/eden.wise.B05.com/public/js"
+    
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    
+    ErrorDocument 404 /error/404.html
+    ErrorDocument 500 /error/404.html
+    ErrorDocument 502 /error/404.html
+    ErrorDocument 503 /error/404.html
+    ErrorDocument 504 /error/404.html
+    <Directory /var/www/eden.wise.B05.com>
+      Options +FollowSymLinks -Multiviews
+      AllowOverride All
+    </Directory>
+  </VirtualHost>
+  ```
+  * Restart atau Reload the Apache2 service dengan `service apache2 reload`
+ * Pada SSS & Garden
+ * `lynx www.eden.wise.B05.com/js`
+ * Screenshot : 
