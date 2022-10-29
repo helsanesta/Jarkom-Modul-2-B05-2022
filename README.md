@@ -235,7 +235,9 @@ RewriteRule (.*) /index.php/\$1 [L]
   * Restart atau Reload Apache2 dengan `service apache2 reload`
 * SSS & Garden
   * lynx www.eden.wise.b05.com
-  * screenshot :: 
+  * screenshot :
+  ![Screenshot_2022-10-29_14_46_28](https://user-images.githubusercontent.com/91010605/198820368-637e6076-cb8b-41bd-8233-3b708fc0ca45.png)
+
 ### No 11
 * Pada folder /public, Loid ingin hanya dapat melakukan directory listing saja
 * Pada Eden
@@ -262,6 +264,8 @@ RewriteRule (.*) /index.php/\$1 [L]
 * Pada SSS & Garden
   * lynx www.eden.wise.b05.com/public
   * screenshot :
+  ![Screenshot_2022-10-29_14_47_44](https://user-images.githubusercontent.com/91010605/198820386-ea6bcf56-5f3a-492e-92b1-c4c9465676de.png)\
+
 ### No 12
 * Loid juga ingin menyiapkan error file 404.html pada folder /error untuk
 mengganti error kode pada apache
@@ -293,6 +297,9 @@ mengganti error kode pada apache
   </VirtualHost>
   ```
   * Restart atau Reload the Apache2 service dengan `service apache2 reload`
+* Pada SSS & Garden
+  * lynx eden.wise.b05.com/yow
+  ![Screenshot_2022-10-29_14_48_51](https://user-images.githubusercontent.com/91010605/198820411-9b694922-bbd6-4543-b9c6-48fb0585c978.png)
 
 ### No 13
 * Loid juga meminta Franky untuk dibuatkan
@@ -328,8 +335,9 @@ www.eden.wise.yyy.com/public/js menjadi www.eden.wise.yyy.com/js.
   ```
   * Restart atau Reload the Apache2 service dengan `service apache2 reload`
  * Pada SSS & Garden
- * `lynx www.eden.wise.B05.com/js`
- * Screenshot : 
+  * `lynx www.eden.wise.B05.com/js`
+  * Screenshot : 
+  ![Screenshot_2022-10-29_14_49_35](https://user-images.githubusercontent.com/91010605/198820449-b86ab1b1-fc1a-485c-b7c5-bbef4142b2c7.png)
 
 ### No 14
 * Pada Eden, buat konfigurasi site `strix.operation.wise.B05.com` pada dir `/etc/apache2/sites-available/strix.operation.wise.B05.com.conf` seperti berikut.
